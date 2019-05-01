@@ -82,7 +82,15 @@ namespace DiscordBot.Modules.ChatCraft
 			}
 		}
 
-		[Command("testscore")]
+        [Command("you cool"), Alias("u cool", "ucool")]
+        public async Task CoolResponse()
+        {
+            Player player = GetPlayer();
+
+            await ReplyAsync("No, you.");
+        }
+
+        [Command("testscore")]
 		public async Task Score(IUser user = null)
 		{
 			Player player = GetPlayer(user ?? Context.User);

@@ -1149,7 +1149,9 @@ public class InfoModule : CrierModuleBase
             joelName = result.Mention;
         }
 
-        string message = $"Welcome! I am the Town Crier.\nI can help with various tasks.\n\nHere are some useful commands:\n\n";
+        string message = $"Welcome! I am the Town Crier.\n" +
+            $"I can help with various tasks.\n\n" +
+            $"Here are some useful commands:\n\n";
 
         commands.Add("help");
         descriptions.Add("In case you get stuck");
@@ -1167,7 +1169,7 @@ public class InfoModule : CrierModuleBase
         descriptions.Add("Flip a coin!");
 
         commands.Add("roll");
-        descriptions.Add("Roll a die!");
+        descriptions.Add("Roll a dice!");
 
 
         //commands.Add("tc help");
