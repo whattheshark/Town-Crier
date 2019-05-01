@@ -40,12 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ChatCraft\craftConfig Backup 2017-09-16--20-23-17.json" />
-    <None Include="ChatCraft\craftConfig Backup 2017-09-16--23-01-57.json" />
-    <None Include="ChatCraft\craftConfig Backup 2017-09-17--23-02-03.json" />
-    <None Include="ChatCraft\craftConfig.json" />
     <None Include="packages.config" />
-    <None Include="reporter.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AltaLogging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -249,11 +244,8 @@
     <Compile Include="Features\JiraReporter.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ReliabilityService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Accounts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions />
   <PropertyGroup>
