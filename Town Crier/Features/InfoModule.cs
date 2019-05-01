@@ -1142,7 +1142,8 @@ public class InfoModule : CrierModuleBase
 
         string joelName = "Joel";
 
-        if (Context.Guild != null)
+        //what does it mean ? why was this '!=' ?
+        if (Context.Guild == null)
         {
             SocketGuildUser result = Context.Guild.GetUser(334934015284871169);
 
@@ -1171,15 +1172,9 @@ public class InfoModule : CrierModuleBase
         commands.Add("roll");
         descriptions.Add("Roll a dice!");
 
-
-        //commands.Add("tc help");
-        //descriptions.Add("An introduction to A Chatty Township Tale");
-
         message += ShowCommands("!", commands, descriptions);
 
         await ReplyAsync(message);
-        //RestUserMessage messageResult = (RestUserMessage)
-        //await messageResult.AddReactionAsync(Emote.Parse("<:hand_splayed:360022582428303362>"));
     }
 
 }
