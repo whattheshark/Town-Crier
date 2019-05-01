@@ -1,5 +1,6 @@
 ﻿using Alta.WebApi.Client;
 using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -51,14 +52,42 @@ public static class ApiAccess
 	{
 		if (!ApiClient.IsLoggedIn)
 		{
-			string[] account = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/account.txt").Trim().Split('|');
+			if (!File.Exists("account.txt"))
+			{
+				Console.WriteLine("`account.txt` expected next to be next to the .exe with the contents `username|password` (for your Alta account)");
+				Console.ReadLine();
+				throw new Exception("No credentials provided");
+			}
 
-			string username = account[0];
-			string password = account[1];
-			
+			string username;
+			string password;
+
 			try
 			{
-				await ApiClient.LoginAsync(username, HashString(password));
+				string[] account = System.IO.File.ReadAllText("account.txt").Trim().Split('|');
+
+				username = account[0].Trim();
+				password = account[1].Trim();
+
+				if (password.Length < 64)
+				{
+					password = HashString(password);
+
+					Console.WriteLine("Detected a password in the account file. Replaced it with a hash for security reasons.");
+
+					File.WriteAllText("account.txt", username + "|" + password);
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("`account.txt` found, but failed reading the contents. Expected format: `username|password` (for your Alta account)");
+				Console.ReadLine();
+				throw new Exception("Invalid credential format");
+			}
+
+			try
+			{
+				await ApiClient.LoginAsync(username, password);
 				Console.WriteLine($"Logged in as {username}");
 			}
 			catch (Exception e)

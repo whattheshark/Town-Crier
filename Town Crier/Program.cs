@@ -100,8 +100,6 @@ class Program
 		commandsProcessor = new CommandsProcessor(client);
 		await commandsProcessor.Initialize();
 
-		ChannelFilters.Apply(commandsProcessor);
-
 		NewcomerHandler.Initialize(client);
 
 		client.Ready += ClientReadyAsync;
@@ -144,5 +142,7 @@ class Program
 	async Task ClientReadyAsync()
 	{
 		Console.WriteLine("Client Ready");
+
+		ChannelFilters.Apply(commandsProcessor);
 	}
 }
