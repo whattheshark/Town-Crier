@@ -56,6 +56,7 @@ namespace DiscordBot
 			}
 		}
 
+
 		public static T Read<T>(string target, params JsonConverter[] customConverters)
 			where T : class
 		{
