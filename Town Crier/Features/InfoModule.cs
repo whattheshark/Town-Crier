@@ -1146,14 +1146,12 @@ public class InfoModule : CrierModuleBase
         if (Context.Guild == null)
         {
             SocketGuildUser result = Context.Guild.GetUser(334934015284871169);
-
             joelName = result.Mention;
         }
-
         string message = $"Welcome! I am the Town Crier.\n" +
             $"I can help with various tasks.\n\n" +
             $"Here are some useful commands:\n\n";
-
+        // ! + Commands + Description
         commands.Add("help");
         descriptions.Add("In case you get stuck");
 
