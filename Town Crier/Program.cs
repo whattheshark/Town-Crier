@@ -1,22 +1,14 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using ActivityRoles;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using DiscordBot;
-using DiscordBot.Modules.ChatCraft;
-using Discord.Rest;
-using System.Linq;
-using System.Collections.Generic;
-using BugReporter;
-using Discord.Addons.Interactive;
-
-using ActivityRoles;
-using DiscordBot.Features.Wiki;
 using DiscordBot.Features;
+using DiscordBot.Modules.ChatCraft;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 class Program
 {

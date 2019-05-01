@@ -1140,14 +1140,6 @@ public class InfoModule : CrierModuleBase
         List<string> commands = new List<string>();
         List<string> descriptions = new List<string>();
 
-        string joelName = "Joel";
-
-        //what does it mean ? why was this '!=' ?
-        if (Context.Guild == null)
-        {
-            SocketGuildUser result = Context.Guild.GetUser(334934015284871169);
-            joelName = result.Mention;
-        }
         string message = $"Welcome! I am the Town Crier.\n" +
             $"I can help with various tasks.\n\n" +
             $"Here are some useful commands:\n\n";
