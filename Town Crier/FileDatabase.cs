@@ -57,13 +57,13 @@ namespace DiscordBot
 		}
 
 		internal static T Read<T>(string target, params JsonConverter[] customConverters)
-			where T : new()
+			where T : class
 		{
 			FileInfo fileInfo = new FileInfo($"../../{target}.json");
 
 			if (!fileInfo.Exists)
 			{
-				return new T();
+				return null;
 			}
 
 			using (StreamReader reader = new StreamReader($"../../{target}.json"))

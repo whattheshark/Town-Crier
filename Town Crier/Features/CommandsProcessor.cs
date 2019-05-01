@@ -68,45 +68,54 @@ namespace DiscordBot.Features
 
 		async Task HandleCommandAsync(SocketMessage arg)
 		{
-			// Bail out if it's a System Message.
-			var message = arg as SocketUserMessage;
-
-			if (message == null)
+			try
 			{
-				return;
-			}
+				// Bail out if it's a System Message.
+				var message = arg as SocketUserMessage;
 
-			if (channelHandlers.ContainsKey(message.Channel.Id))
-			{
-				if (!await channelHandlers[message.Channel.Id].Invoke(message))
+				if (message == null)
 				{
 					return;
 				}
-			}
 
-			PointCounter.Process(message);
-
-			await OutOfOffice.Process(message);
-
-			await ServerTeamAlert.Process(message);
-
-			// Create a number to track where the prefix ends and the command begins
-			int commandStartIndex = 0;
-
-			bool isMentioned = message.HasMentionPrefix(Client.CurrentUser, ref commandStartIndex);
-
-			if (isMentioned || message.HasCharPrefix('!', ref commandStartIndex))
-			{
-				await CheckCommand(message, commandStartIndex);
-			}
-			else
-			{
-				WikiSearcher.Process(message);
-
-				if (isMentioned)
+				if (channelHandlers.ContainsKey(message.Channel.Id))
 				{
-					await DoYouCare.Process(message);
+					if (!await channelHandlers[message.Channel.Id].Invoke(message))
+					{
+						return;
+					}
 				}
+
+				PointCounter.Process(message);
+
+				await OutOfOffice.Process(message);
+
+				await ServerTeamAlert.Process(message);
+
+				// Create a number to track where the prefix ends and the command begins
+				int commandStartIndex = 0;
+
+				bool isMentioned = message.HasMentionPrefix(Client.CurrentUser, ref commandStartIndex);
+
+				if (isMentioned || message.HasCharPrefix('!', ref commandStartIndex))
+				{
+					await CheckCommand(message, commandStartIndex);
+				}
+				else
+				{
+					WikiSearcher.Process(message);
+
+					if (isMentioned)
+					{
+						await DoYouCare.Process(message);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Failed to process message : " + arg.Content);
+				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
 			}
 		}
 
