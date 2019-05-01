@@ -10,14 +10,14 @@ Who to talk to about stuff:
 
 Things that need some serious work:
 - 	Program.cs - *throws up*, this whole project is what happens when someone hacks in things with very little thought as to where/how things are arranged.
-- 	Right now ChatCraft's config file contains all game configuration (locations, items, etc.) as well as every 'player'. This means that the file is stupidly big on large severs, and the whole thing is loaded into RAM on startup.
+- 	Right now ChatCraft's config00 file contains all game configuration (locations, items, etc.) as well as every 'player'. This means that the file is stupidly big on large severs, and the whole thing is loaded into RAM on startup.
 - 	ChatCraft's player profile also has non-chatcraft related information, such as join date etc.
 - 	Ideally 'player profiles' are moved to some form of database system.
 - 	Ideally the game also isn't one huge file, but instead broken down in some way, to potentially allow for easier contribution of sets of items, locations, etc.
 
 
 Hurdles that we need to work out:
--	The project relies on two internal projects (called WebApiClient and WebApiModels).
+-	The project relies on three internal projects (called WebApiClient, WebApiModels, and AltaLogging).
 	These we have hooked up through Nuget to our private repository. I've included the DLL's in the repo manually.
 
 	
