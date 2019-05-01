@@ -16,6 +16,7 @@ using Discord.Addons.Interactive;
 using ActivityRoles;
 using DiscordBot.Features.Wiki;
 using DiscordBot.Features;
+using System.IO;
 
 class Program
 {
@@ -48,7 +49,14 @@ class Program
 
 		Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
 
-		foreach (string line in System.IO.File.ReadLines(System.IO.Directory.GetCurrentDirectory() + "/token.txt"))
+		if (!File.Exists("token.txt"))
+		{
+			Console.WriteLine("You must provide a bot token in 'token.txt' alongside the .exe (in the folder mentioned above)");
+			Console.ReadLine();
+			return;
+		}
+
+		foreach (string line in System.IO.File.ReadLines("token.txt"))
 		{
 			token = line;
 			break;

@@ -44,7 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AltaLogging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AltaLogging.1.0.0\lib\net461\AltaLogging.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AltaDLLs\AltaLogging.dll</HintPath>
     </Reference>
     <Reference Include="Discord.Addons.Interactive, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Discord.Addons.Interactive.1.0.1\lib\netstandard1.1\Discord.Addons.Interactive.dll</HintPath>
@@ -188,10 +189,12 @@
       <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
     <Reference Include="WebApiClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AltaWebApiClient.1.0.9\lib\net461\WebApiClient.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AltaDLLs\WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="WebApiModels, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AltaWebApiModels.1.0.2\lib\net461\WebApiModels.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AltaDLLs\WebApiModels.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

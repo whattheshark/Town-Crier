@@ -13,7 +13,14 @@ namespace DiscordBot
 	{
 		public static void Write(string target, object value, bool isBackingUp, params JsonConverter[] customConverters)
 		{
-			using (StreamWriter writer = new StreamWriter($"../../{target}.json"))
+			FileInfo fileInfo = new FileInfo($"../../{target}.json");
+
+			if (!fileInfo.Directory.Exists)
+			{
+				fileInfo.Directory.Create();
+			}
+
+			using (StreamWriter writer = new StreamWriter(fileInfo.FullName))
 			{
 				JsonSerializerSettings settings = new JsonSerializerSettings()
 				{
@@ -50,7 +57,15 @@ namespace DiscordBot
 		}
 
 		internal static T Read<T>(string target, params JsonConverter[] customConverters)
+			where T : new()
 		{
+			FileInfo fileInfo = new FileInfo($"../../{target}.json");
+
+			if (!fileInfo.Exists)
+			{
+				return new T();
+			}
+
 			using (StreamReader reader = new StreamReader($"../../{target}.json"))
 			{
 				string json = reader.ReadToEnd();
