@@ -56,7 +56,7 @@ namespace DiscordBot
 			}
 		}
 
-		internal static T Read<T>(string target, params JsonConverter[] customConverters)
+		public static T Read<T>(string target, params JsonConverter[] customConverters)
 			where T : class
 		{
 			FileInfo fileInfo = new FileInfo($"../../{target}.json");
