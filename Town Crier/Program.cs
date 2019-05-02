@@ -12,130 +12,133 @@ using System.Threading.Tasks;
 
 class Program
 {
-    //readonly 
-    readonly Dictionary<ulong, IRole> inGameRoles = new Dictionary<ulong, IRole>();
-    readonly DiscordSocketClient client;
-    //init
-    private string token;
-    static Program program;
-    CommandsProcessor commandsProcessor;
+	//readonly 
+	readonly Dictionary<ulong, IRole> inGameRoles = new Dictionary<ulong, IRole>();
+	readonly DiscordSocketClient client;
+	//init
+	private string token;
+	static Program program;
+	CommandsProcessor commandsProcessor;
 
-    // Program entry point
-    static void Main(string[] args)
-    {
-        // Call the Program constructor, followed by the 
-        // MainAsync method and wait until it finishes (which should be never).
-        program = new Program();
-        program.MainAsync().GetAwaiter().GetResult();
-    }
+	// Program entry point
+	static void Main(string[] args)
+	{
+		// Call the Program constructor, followed by the 
+		// MainAsync method and wait until it finishes (which should be never).
+		program = new Program();
+		program.MainAsync().GetAwaiter().GetResult();
+	}
 
-    Program()
-    {
-        //startup stuff
-        ChatCraft.Initialize();
-        StartupTokenInit(this);
-        client = new DiscordSocketClient(new DiscordSocketConfig
-        {
-            // How much logging do you want to see?
-            LogLevel = LogSeverity.Info,
-            AlwaysDownloadUsers = true
+	Program()
+	{
+		//startup stuff
+		ChatCraft.Initialize();
 
-            // If you or another service needs to do anything with messages
-            // (eg. checking Reactions, checking the content of edited/deleted messages),
-            // you must set the MessageCacheSize. You may adjust the number as needed.
-            //MessageCacheSize = 50,
+		token = GetToken();
 
-            // If your platform doesn't have native websockets,
-            // add Discord.Net.Providers.WS4Net from NuGet,
-            // add the `using` at the top, and uncomment this line:
-            //WebSocketProvider = WS4NetProvider.Instance
-        });
-        // Subscribe the logging handler to both the client and the CommandService.
-        client.Log += Logger.Log;
-    }
+		client = new DiscordSocketClient(new DiscordSocketConfig
+		{
+			// How much logging do you want to see?
+			LogLevel = LogSeverity.Info,
+			AlwaysDownloadUsers = true
 
-    private void StartupTokenInit(Program p)
-    {
-        //writes current dir
-        Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
-        //check for token
-        if (!File.Exists("token.txt"))
-        {
-            Console.WriteLine("You must provide a bot token in 'token.txt' alongside the .exe (in the folder mentioned above)");
-            Console.ReadLine();
-            return;
-        }
-        foreach (string line in System.IO.File.ReadLines("token.txt"))
-        {
-            p.token = line;
-            break;
-        }
-    }
+			// If you or another service needs to do anything with messages
+			// (eg. checking Reactions, checking the content of edited/deleted messages),
+			// you must set the MessageCacheSize. You may adjust the number as needed.
+			//MessageCacheSize = 50,
 
-    public static SocketGuild GetGuild(ulong id = 334933825383563266)
-    {
-        return program.client.GetGuild(id);
-    }
+			// If your platform doesn't have native websockets,
+			// add Discord.Net.Providers.WS4Net from NuGet,
+			// add the `using` at the top, and uncomment this line:
+			//WebSocketProvider = WS4NetProvider.Instance
+		});
+		// Subscribe the logging handler to both the client and the CommandService.
+		client.Log += Logger.Log;
+	}
 
-    #region Tasks
+	string GetToken()
+	{
+		//writes current dir
+		Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
+		//check for token
+		if (!File.Exists("token.txt"))
+		{
+			Console.WriteLine("You must provide a bot token in 'token.txt' alongside the .exe (in the folder mentioned above)");
+			Console.ReadLine();
+			return null;
+		}
 
-    public static async Task ExecuteCommand(string command, ICommandContext context)
-    {
-        await program.commandsProcessor.ExecuteCommand(command, context);
-    }
+		return File.ReadAllText("token.txt").Trim();
+	}
 
-    private async Task MainAsync()
-    {
-        await ApiAccess.EnsureLoggedIn();
+	public static SocketGuild GetGuild(ulong id = 334933825383563266)
+	{
+		return program.client.GetGuild(id);
+	}
 
-        commandsProcessor = new CommandsProcessor(client);
-        await commandsProcessor.Initialize();
+	#region Tasks
 
-        NewcomerHandler.Initialize(client);
+	public static async Task ExecuteCommand(string command, ICommandContext context)
+	{
+		await program.commandsProcessor.ExecuteCommand(command, context);
+	}
 
-        client.Ready += ClientReadyAsync;
+	private async Task MainAsync()
+	{
+		await ApiAccess.EnsureLoggedIn();
 
-        client.Disconnected += Disconnected;
+		commandsProcessor = new CommandsProcessor(client);
+		await commandsProcessor.Initialize();
 
-        await EnableRoleManager();
+		NewcomerHandler.Initialize(client);
 
-        await client.LoginAsync(TokenType.Bot, token);
-        await client.StartAsync();
+		client.Ready += ClientReadyAsync;
 
-        await client.SetGameAsync("A Chatty Township Tale");
+		client.Disconnected += Disconnected;
 
-        AccountModule.EnsureLoaded();
+		await EnableRoleManager();
 
-        await Task.Delay(-1);
-    }
+		await client.LoginAsync(TokenType.Bot, token);
+		await client.StartAsync();
 
-    async Task EnableRoleManager()
-    {
-        ActivityRoleManager activityRoleManager = new ActivityRoleManager(client);
+		await client.SetGameAsync("A Chatty Township Tale");
 
-        //Add roles here.
-        //Game Name is a regex expression.
-        //Role Name is just the name of the role
-        //Activity Flag (optional) is what types of activities to match
-        await activityRoleManager.AddActivityRole(new ActivityDefinition("A Township Tale", "in game"));
-        await activityRoleManager.AddActivityRole(new ActivityDefinition("A Township Tale", "streaming", ActivityFlag.Streaming));
-        //await activityRoleManager.AddActivityRole(new ActivityDefinition("^Final Fantasy", "final fantasy", ActivityFlag.Streaming | ActivityFlag.Playing));
-        //await activityRoleManager.AddActivityRole(new ActivityDefinition("^Spotify$", "listening", ActivityFlag.Listening));
+		AccountModule.EnsureLoaded();
 
-        await activityRoleManager.SetEnabled(true);
-    }
+		await Task.Delay(-1);
+	}
 
-    async Task ClientReadyAsync()
-    {
-        await Task.Run(() => Console.WriteLine("Client Ready"));
+	async Task EnableRoleManager()
+	{
+		ActivityRoleManager activityRoleManager = new ActivityRoleManager(client);
 
-        ChannelFilters.Apply(commandsProcessor);
-    }
+		//Add roles here.
+		//Game Name is a regex expression.
+		//Role Name is just the name of the role
+		//Activity Flag (optional) is what types of activities to match
+		await activityRoleManager.AddActivityRole(new ActivityDefinition("A Township Tale", "in game"));
+		await activityRoleManager.AddActivityRole(new ActivityDefinition("A Township Tale", "streaming", ActivityFlag.Streaming));
+		//await activityRoleManager.AddActivityRole(new ActivityDefinition("^Final Fantasy", "final fantasy", ActivityFlag.Streaming | ActivityFlag.Playing));
+		//await activityRoleManager.AddActivityRole(new ActivityDefinition("^Spotify$", "listening", ActivityFlag.Listening));
 
-    async Task Disconnected(Exception ey)
-    {
-        await Task.Run(() => Console.WriteLine("Disconnected"));
-    }
+		await activityRoleManager.SetEnabled(true);
+	}
 
-    #endregion
+	Task ClientReadyAsync()
+	{
+		Console.WriteLine("Client Ready");
+
+		ChannelFilters.Apply(commandsProcessor);
+
+		return Task.CompletedTask;
+	}
+
+	Task Disconnected(Exception ey)
+	{
+		Console.WriteLine("Disconnected");
+
+		return Task.CompletedTask;
+	}
+
+	#endregion
 }
