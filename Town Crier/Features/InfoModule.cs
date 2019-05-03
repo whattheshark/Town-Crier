@@ -1291,6 +1291,12 @@ public class WhoIs : CrierModuleBase
 
 	[Command("matssu")]
 	public async Task Matssu() => await ReplyAsync("An adventurer who explored the depths of the source code... The first contributor!");
+	
+	[Command("shark"), Alias("whattheshark")]
+	public async Task Shark() => await ReplyAsync("shark is usually around somewhere, quietly dancing to themselves");
+
+    [Command("ragesaq"), Alias("rage", "raja sock", "rages aq")]
+	public async Task Shark() => await ReplyAsync("Ah, the MAULfather. #1 ranked player in Bossun Saber... you shouldn't underestimate his power.");
 
 	static readonly string[] UnknownReplies = new string[]
 	{
